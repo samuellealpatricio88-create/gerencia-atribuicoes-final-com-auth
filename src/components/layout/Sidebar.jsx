@@ -55,8 +55,14 @@ export function Sidebar({ activeItem = 'dashboard', onItemClick, className = '' 
   const [isCollapsed, setIsCollapsed] = useState(false)
   const { user, userRole, signOut } = useAuth()
 
+  // Debug logs
+  console.log('Sidebar - userRole:', userRole)
+  console.log('Sidebar - user:', user)
+
   // Filtrar itens do menu baseado no role do usuário
   const menuItems = allMenuItems.filter(item => item.roles.includes(userRole))
+  
+  console.log('Sidebar - menuItems after filter:', menuItems)
 
   const handleLogout = async () => {
     await signOut()

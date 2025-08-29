@@ -47,18 +47,25 @@ export const AuthProvider = ({ children }) => {
 
   const fetchUserRole = async (userId) => {
     try {
+      console.log('Fetching user role for userId:', userId)
+      
       const { data, error } = await supabase
         .from('user_roles')
         .select('role')
         .eq('user_id', userId)
         .single()
 
+      console.log('Supabase response:', { data, error })
+
       if (error && error.code !== 'PGRST116') { // PGRST116 = no rows returned
         console.error('Error fetching user role:', error)
+        setUserRole('operator')
         return
       }
 
-      setUserRole(data?.role || 'operator') // Default to operator if no role found
+      const role = data?.role || 'operator'
+      console.log('Setting user role to:', role)
+      setUserRole(role)
     } catch (error) {
       console.error('Error fetching user role:', error)
       setUserRole('operator') // Default to operator on error
